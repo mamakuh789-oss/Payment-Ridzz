@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Pembayaran Keren | Ridzz Payment</title>
+    <!-- Font Awesome 6 (gratis & keren) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts: Poppins modern -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Poppins', sans-serif;
+            background: linear-gradient(145deg, #0b1120 0%, #111827 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        /* background subtle pattern */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle at 20% 40%, rgba(56, 189, 248, 0.08) 0%, transparent 40%),
+                              radial-gradient(circle at 80% 70%, rgba(168, 85, 247, 0.08) 0%, transparent 45%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* container utama */
+        .payment-container {
+            max-width: 520px;
+            width: 100%;
+            background: rgba(18, 25, 45, 0.75);
+            backdrop-filter: blur(14px);
+            border-radius: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.5), 0 0 0 0.5px rgba(255, 255, 255, 0.02) inset;
+            overflow: hidden;
+            transition: transform 0.25s ease;
+            z-index: 2;
+        }
+
+        .payment-container:hover {
+            transform: scale(1.01);
+        }
+
+        /* header gradient */
+        .header-payment {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            padding: 1.8rem 2rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .header-payment h1 {
+            font-size: 1.9rem;
+            font-weight: 700;
+            background: linear-gradient(120deg, #E0E7FF, #A5F3FC);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.3px;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-payment h1 i {
+            background: none;
+            color: #38bdf8;
+            background-clip: unset;
+            -webkit-background-clip: unset;
+            font-size: 1.8rem;
+        }
+
+        .sub {
+            color: #94a3b8;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+
+        /* kartu metode */
+        .methods-section {
+            padding: 1.8rem 1.8rem 1rem 1.8rem;
+        }
+
+        .method-card {
+            background: rgba(15, 23, 42, 0.7);
+            border-radius: 2rem;
+            padding: 1.2rem 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            transition: all 0.2s;
+            backdrop-filter: blur(4px);
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+
+        .method-card:hover {
+            background: rgba(30, 41, 59, 0.8);
+            border-color: rgba(56, 189, 248, 0.6);
+            transform: translateY(-3px);
+        }
+
+        .method-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .method-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .method-title i {
+            font-size: 2rem;
+        }
+
+        .method-title h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+        }
+
+        .badge {
+            background: rgba(56, 189, 248, 0.2);
+            padding: 5px 12px;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #7dd3fc;
+            border: 0.5px solid rgba(56, 189, 248, 0.5);
+        }
+
+        .detail-info {
+            padding-left: 0.2rem;
+        }
+
+        .info-row {
+            display: flex;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+            font-size: 0.95rem;
+            background: rgba(0, 0, 0, 0.25);
+            padding: 10px 12px;
+            border-radius: 1.2rem;
+        }
+
+        .info-label {
+            font-weight: 500;
+            color: #cbd5e1;
+            min-width: 70px;
+            font-size: 0.8rem;
+            letter-spacing: 0.3px;
+        }
+
+        .info-value {
+            font-weight: 700;
+            color: #f1f5f9;
+            font-family: monospace;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+            word-break: break-all;
+        }
+
+        .copy-btn {
+            background: none;
+            border: none;
+            color: #38bdf8;
+            margin-left: 10px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: 0.1s;
+            padding: 4px 8px;
+            border-radius: 30px;
+            background: rgba(56, 189, 248, 0.1);
+        }
+
+        .copy-btn:hover {
+            background: #38bdf8;
+            color: #0f172a;
+        }
+
+        .owner-name {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(0,0,0,0.3);
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            color: #a5f3fc;
+        }
+
+        /* form nominal */
+        .amount-section {
+            padding: 0rem 1.8rem 1.2rem 1.8rem;
+        }
+
+        .amount-box {
+            background: #0f172a;
+            border-radius: 1.8rem;
+            padding: 1.3rem 1.5rem;
+            border: 1px solid #334155;
+        }
+
+        .amount-label {
+            font-weight: 600;
+            color: #cbd5e1;
+            margin-bottom: 12px;
+            display: block;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+
+        .input-amount {
+            display: flex;
+            align-items: center;
+            background: #1e293b;
+            border-radius: 2rem;
+            padding: 0.2rem 1rem;
+            border: 1px solid #334155;
+            transition: all 0.2s;
+        }
+
+        .input-amount:focus-within {
+            border-color: #38bdf8;
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+        }
+
+        .currency {
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: #94a3b8;
+            padding-right: 8px;
+        }
+
+        .input-amount input {
+            background: transparent;
+            border: none;
+            padding: 1rem 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+            width: 100%;
+            color: #f8fafc;
+            outline: none;
+            font-family: monospace;
+        }
+
+        .input-amount input::placeholder {
+            color: #475569;
+            font-weight: 400;
+            font-size: 1.2rem;
+        }
+
+        .btn-pay {
+            width: 100%;
+            background: linear-gradient(105deg, #0ea5e9, #3b82f6);
+            border: none;
+            border-radius: 3rem;
+            padding: 1rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            cursor: pointer;
+            margin-top: 1.2rem;
+            transition: all 0.2s;
+            box-shadow: 0 6px 14px rgba(14, 165, 233, 0.25);
+        }
+
+        .btn-pay:hover {
+            background: linear-gradient(105deg, #0284c7, #2563eb);
+            transform: scale(0.98);
+            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.4);
+        }
+
+        /* toast notifikasi */
+        .toast-message {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) scale(0.9);
+            background: #1e293bdd;
+            backdrop-filter: blur(12px);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 60px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-left: 4px solid #38bdf8;
+            box-shadow: 0 15px 30px -12px black;
+            z-index: 200;
+            opacity: 0;
+            transition: opacity 0.2s, transform 0.2s;
+            pointer-events: none;
+        }
+
+        .toast-message.show {
+            opacity: 1;
+            transform: translateX(-50%) scale(1);
+            pointer-events: none;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1.2rem;
+            font-size: 0.7rem;
+            color: #475569;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            background: rgba(0,0,0,0.2);
+        }
+
+        @media (max-width: 480px) {
+            .payment-container {
+                border-radius: 2rem;
+            }
+            .method-title h2 {
+                font-size: 1.3rem;
+            }
+            .input-amount input {
+                font-size: 1.2rem;
+            }
+            .method-card {
+                padding: 1rem;
+            }
+            .header-payment h1 {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* highlight aktif untuk kartu (opsi) */
+        .method-card.active-method {
+            background: rgba(56, 189, 248, 0.15);
+            border-color: #38bdf8;
+            box-shadow: 0 8px 20px -8px rgba(56, 189, 248, 0.3);
+        }
+    </style>
+</head>
+<body>
+
+<div class="payment-container">
+    <div class="header-payment">
+        <h1>
+            <i class="fas fa-wallet"></i> 
+            RidzzPay
+        </h1>
+        <div class="sub">Bayar mudah • cepat • terpercaya</div>
+    </div>
+
+    <div class="methods-section">
+        <!-- Kartu DANA -->
+        <div class="method-card" id="cardDana" data-method="dana">
+            <div class="method-header">
+                <div class="method-title">
+                    <i class="fab fa-cc-visa" style="color:#2b7cff; background: #ffffff1a; padding: 6px; border-radius: 16px;"></i>
+                    <h2 style="color:#E0F2FE">DANA</h2>
+                </div>
+                <div class="badge"><i class="fas fa-check-circle"></i> Rekomendasi</div>
+            </div>
+            <div class="detail-info">
+                <div class="info-row">
+                    <span class="info-label"><i class="fas fa-mobile-alt"></i> Nomor</span>
+                    <span class="info-value" id="danaNumber">085178162643</span>
+                    <button class="copy-btn" data-copy="085178162643"><i class="far fa-copy"></i> Salin</button>
+                </div>
+                <div class="info-row">
+                    <span class="info-label"><i class="fas fa-user"></i> Atas nama</span>
+                    <span class="info-value">ridzznot4u</span>
+                    <span class="owner-name"><i class="fas fa-id-card"></i> Terverifikasi</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kartu GOPAY -->
+        <div class="method-card" id="cardGopay" data-method="gopay">
+            <div class="method-header">
+                <div class="method-title">
+                    <i class="fab fa-google-pay" style="color:#00d26a; background:#0f2f1f; padding:6px; border-radius: 16px;"></i>
+                    <h2 style="color:#DCFCE7">GoPay</h2>
+                </div>
+                <div class="badge"><i class="fas fa-bolt"></i> Instan</div>
+            </div>
+            <div class="detail-info">
+                <div class="info-row">
+                    <span class="info-label"><i class="fas fa-mobile-alt"></i> Nomor</span>
+                    <span class="info-value" id="gopayNumber">085178162643</span>
+                    <button class="copy-btn" data-copy="085178162643"><i class="far fa-copy"></i> Salin</button>
+                </div>
+                <div class="info-row">
+                    <span class="info-label"><i class="fas fa-user"></i> Atas nama</span>
+                    <span class="info-value">Ridzz</span>
+                    <span class="owner-name"><i class="fas fa-shield-alt"></i> Premium</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="amount-section">
+        <div class="amount-box">
+            <div class="amount-label"><i class="fas fa-coins"></i> Masukkan nominal (IDR)</div>
+            <div class="input-amount">
+                <span class="currency">Rp</span>
+                <input type="number" id="amountInput" placeholder="0" value="50000" step="5000" min="1000">
+            </div>
+            <button class="btn-pay" id="payBtn">
+                <i class="fas fa-arrow-right-to-bracket"></i> Lanjutkan Pembayaran
+            </button>
+            <div style="font-size: 0.7rem; margin-top: 12px; text-align: center; color: #5b6e8c;">
+                <i class="fas fa-lock"></i> Transaksi aman & terenkripsi
+            </div>
+        </div>
+    </div>
+    <footer>
+        <i class="fas fa-clock"></i> 24/7 Support • Transfer langsung ke akun resmi
+    </footer>
+</div>
+
+<div id="toastMsg" class="toast-message">
+    <i class="fas fa-check-circle" style="color:#4ade80"></i> <span id="toastText">Tersalin!</span>
+</div>
+
+<script>
+    // Data pembayaran dari spesifikasi
+    const paymentData = {
+        dana: {
+            name: "DANA",
+            number: "085178162643",
+            owner: "ridzznot4u"
+        },
+        gopay: {
+            name: "GoPay",
+            number: "085178162643",
+            owner: "Ridzz"
+        }
+    };
+
+    // State metode aktif (default dana)
+    let activeMethod = "dana";
+
+    // Elemen
+    const danaCard = document.getElementById('cardDana');
+    const gopayCard = document.getElementById('cardGopay');
+    const payButton = document.getElementById('payBtn');
+    const amountInput = document.getElementById('amountInput');
+    const toastMsg = document.getElementById('toastMsg');
+    const toastTextSpan = document.getElementById('toastText');
+
+    // Fungsi showToast
+    function showToast(message, isError = false) {
+        toastTextSpan.innerHTML = message;
+        if(isError) {
+            toastMsg.style.borderLeftColor = "#f97316";
+            toastMsg.querySelector('i').className = "fas fa-exclamation-triangle";
+            toastMsg.querySelector('i').style.color = "#fbbf24";
+        } else {
+            toastMsg.style.borderLeftColor = "#38bdf8";
+            toastMsg.querySelector('i').className = "fas fa-check-circle";
+            toastMsg.querySelector('i').style.color = "#4ade80";
+        }
+        toastMsg.classList.add('show');
+        setTimeout(() => {
+            toastMsg.classList.remove('show');
+        }, 2500);
+    }
+
+    // update tampilan aktif di kartu
+    function setActiveMethod(method) {
+        activeMethod = method;
+        if(method === "dana") {
+            danaCard.classList.add('active-method');
+            gopayCard.classList.remove('active-method');
+        } else {
+            gopayCard.classList.add('active-method');
+            danaCard.classList.remove('active-method');
+        }
+    }
+
+    // event klik kartu
+    danaCard.addEventListener('click', (e) => {
+        // cegah jika tombol copy di dalam card ikut trigger berlebihan (tapi fine)
+        if(e.target.closest('.copy-btn')) return;
+        setActiveMethod('dana');
+        showToast(`Metode diubah ke DANA ✓`, false);
+    });
+
+    gopayCard.addEventListener('click', (e) => {
+        if(e.target.closest('.copy-btn')) return;
+        setActiveMethod('gopay');
+        showToast(`Metode diubah ke GoPay ✓`, false);
+    });
+
+    // fungsi copy nomor via tombol
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const numberToCopy = btn.getAttribute('data-copy');
+            if(numberToCopy) {
+                navigator.clipboard.writeText(numberToCopy).then(() => {
+                    showToast(`Nomor ${numberToCopy} disalin ke clipboard!`, false);
+                }).catch(() => {
+                    showToast(`Gagal menyalin, salin manual ya`, true);
+                });
+            }
+        });
+    });
+
+    // fungsi utama pembayaran (simulasi popup/info)
+    function processPayment(method, amount) {
+        if(!amount || amount <= 0 || isNaN(amount)) {
+            showToast(`❌ Masukkan nominal yang valid (min Rp 1.000)`, true);
+            return false;
+        }
+        if(amount < 1000) {
+            showToast(`Minimal nominal Rp 1.000`, true);
+            return false;
+        }
+
+        const methodInfo = paymentData[method];
+        if(!methodInfo) return false;
+
+        const formattedAmount = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(amount);
+        
+        // Alert modern pakai toast + alert bawaan? supaya lebih menarik bisa pakai confirm style tapi kita gunakan custom notif detail
+        // Tampilkan popup konfirmasi cantik dengan window.confirm? tapi lebih baik notifikasi + alert ringan biar informatif
+        const confirmMsg = `🧾 RINCIAN PEMBAYARAN\n\nMetode : ${methodInfo.name}\nNomor Tujuan : ${methodInfo.number}\nAtas Nama : ${methodInfo.owner}\nTotal Bayar : ${formattedAmount}\n\nKlik OK untuk lanjut ke pembayaran (simulasi).`;
+        if(window.confirm(confirmMsg)) {
+            // Simulasi sukses: tampilkan toast sukses dan arahkan ke app? karena payment sederhana hanya demo.
+            showToast(`✅ Berhasil! Silakan selesaikan pembayaran ${formattedAmount} via ${methodInfo.name} ke ${methodInfo.number} a.n ${methodInfo.owner}`, false);
+            // optional: bisa redirect atau kosong
+            return true;
+        } else {
+            showToast(`⛔ Pembayaran dibatalkan`, true);
+            return false;
+        }
+    }
+
+    // event tombol bayar
+    payButton.addEventListener('click', () => {
+        let rawAmount = amountInput.value.trim();
+        let amountNumber = parseFloat(rawAmount);
+        if(isNaN(amountNumber)) amountNumber = 0;
+        processPayment(activeMethod, amountNumber);
+    });
+
+    // juga handle enter di input
+    amountInput.addEventListener('keypress', (e) => {
+        if(e.key === 'Enter') {
+            e.preventDefault();
+            let amountNumber = parseFloat(amountInput.value);
+            if(isNaN(amountNumber)) amountNumber = 0;
+            processPayment(activeMethod, amountNumber);
+        }
+    });
+
+    // inisialisasi: set active method dana awal
+    setActiveMethod('dana');
+
+    // tambahan efek saat hover info, dan validasi input tidak negatif
+    amountInput.addEventListener('input', function() {
+        let val = parseInt(this.value);
+        if(val < 0) this.value = 0;
+        if(this.value === "") this.value = "";
+    });
+    
+    // prefill info di console tidak mengganggu
+    console.log("Payment UI siap | DANA: 085178162643 (ridzznot4u) | GOPAY: 085178162643 (Ridzz)");
+</script>
+</body>
+</html>
