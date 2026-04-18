@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Pembayaran Instan - Kece & Modern</title>
+    <!-- Font Awesome 6 (free icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts: Poppins & Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(145deg, #e0eafc 0%, #cfdef3 100%);
+            font-family: 'Inter', sans-serif;
+            padding: 1.5rem;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Card utama */
+        .payment-card {
+            max-width: 580px;
+            width: 100%;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.96);
+            backdrop-filter: blur(0px);
+            border-radius: 48px;
+            box-shadow: 0 25px 45px -12px rgba(0,0,0,0.35), 0 2px 8px rgba(0,0,0,0.05);
+            overflow: hidden;
+            transition: transform 0.2s ease;
+        }
+
+        .payment-card:hover {
+            transform: scale(1.01);
+        }
+
+        /* Header gradient kece */
+        .header-glow {
+            background: linear-gradient(135deg, #0B2B40 0%, #1A4A5F 100%);
+            padding: 2rem 1.8rem 1.8rem 1.8rem;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .header-glow h1 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1.9rem;
+            letter-spacing: -0.3px;
+            margin-bottom: 0.4rem;
+        }
+
+        .header-glow p {
+            font-weight: 400;
+            opacity: 0.85;
+            font-size: 0.9rem;
+        }
+
+        .badge-payment {
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(4px);
+            display: inline-block;
+            padding: 0.3rem 1rem;
+            border-radius: 60px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-top: 0.8rem;
+        }
+
+        /* konten utama */
+        .content {
+            padding: 2rem 1.8rem 2rem 1.8rem;
+        }
+
+        /* section style */
+        .payment-method {
+            background: #f8faff;
+            border-radius: 32px;
+            padding: 1.2rem 1.4rem;
+            margin-bottom: 1.8rem;
+            transition: all 0.2s;
+            border: 1px solid rgba(0,0,0,0.03);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+        }
+
+        .method-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: #1F2A3E;
+            margin-bottom: 1rem;
+            border-left: 4px solid #1A4A5F;
+            padding-left: 12px;
+        }
+
+        .method-title i {
+            font-size: 1.6rem;
+            color: #1A4A5F;
+        }
+
+        .info-rekening {
+            background: white;
+            border-radius: 24px;
+            padding: 0.8rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 1rem;
+            border: 1px solid #e9edf4;
+        }
+
+        .nomor-detail {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .label-small {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: #6c7a91;
+            letter-spacing: 0.5px;
+        }
+
+        .nomor-akun {
+            font-size: 1.35rem;
+            font-weight: 800;
+            font-family: 'Poppins', monospace;
+            letter-spacing: 0.5px;
+            color: #0B2B40;
+        }
+
+        .nama-owner {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #2c3e4e;
+            margin-top: 4px;
+        }
+
+        .btn-copy {
+            background: #eef2fa;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: #1A4A5F;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-copy:hover {
+            background: #dce3f0;
+            transform: scale(0.97);
+        }
+
+        /* qris area */
+        .qris-area {
+            background: white;
+            border-radius: 28px;
+            padding: 1.2rem;
+            text-align: center;
+            border: 1px solid #eef2fa;
+        }
+
+        .qris-image-wrapper {
+            background: #ffffff;
+            border-radius: 28px;
+            padding: 12px;
+            margin: 12px 0;
+            display: inline-block;
+            box-shadow: 0 10px 20px -5px rgba(0,0,0,0.1);
+        }
+
+        .qris-placeholder {
+            width: 180px;
+            height: 180px;
+            background: linear-gradient(145deg, #f5f7fc, #e9eef5);
+            border-radius: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            color: #2c5a6e;
+            gap: 8px;
+            margin: 0 auto;
+            border: 1px dashed #9bb7d0;
+        }
+
+        .qris-placeholder i {
+            font-size: 3rem;
+            color: #1A4A5F;
+        }
+
+        .real-qris-img {
+            width: 180px;
+            height: auto;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            display: block;
+        }
+
+        .qris-caption {
+            font-size: 0.75rem;
+            color: #4a627a;
+            margin-top: 12px;
+            font-weight: 500;
+        }
+
+        /* tombol aksi */
+        .action-buttons {
+            display: flex;
+            gap: 14px;
+            margin-top: 28px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            flex: 1;
+            background: linear-gradient(95deg, #1A4A5F, #0F3B4C);
+            border: none;
+            padding: 14px 0;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 6px 14px rgba(26,74,95,0.3);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(95deg, #0F3B4C, #0C2E3E);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            flex: 1;
+            background: transparent;
+            border: 1.5px solid #1A4A5F;
+            padding: 12px 0;
+            border-radius: 60px;
+            font-weight: 600;
+            color: #1A4A5F;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-outline:hover {
+            background: #eef2fc;
+            border-color: #0f3b4c;
+        }
+
+        /* toast notifikasi */
+        .toast-msg {
+            position: fixed;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%) scale(0.9);
+            background: #1F2A3E;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 60px;
+            font-weight: 500;
+            font-size: 0.85rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            opacity: 0;
+            transition: opacity 0.2s, transform 0.2s;
+            pointer-events: none;
+            z-index: 1000;
+            backdrop-filter: blur(8px);
+            background: rgba(0,0,0,0.85);
+            font-family: monospace;
+        }
+
+        .toast-msg.show {
+            opacity: 1;
+            transform: translateX(-50%) scale(1);
+        }
+
+        hr {
+            margin: 12px 0;
+            border: 0;
+            height: 1px;
+            background: linear-gradient(to right, #e2e8f0, transparent);
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.7rem;
+            padding: 1rem 1rem 1.5rem;
+            color: #6b7b8f;
+            border-top: 1px solid #edf2f7;
+        }
+
+        @media (max-width: 480px) {
+            .content {
+                padding: 1.5rem;
+            }
+            .nomor-akun {
+                font-size: 1.1rem;
+            }
+            .qris-placeholder, .real-qris-img {
+                width: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="payment-card">
+    <div class="header-glow">
+        <h1><i class="fas fa-wallet" style="margin-right: 8px;"></i> Bayar Gampang</h1>
+        <p>Transfer instan · Aman · Terpercaya</p>
+        <div class="badge-payment">
+            <i class="fas fa-shield-alt"></i> Payment Gateway SIMPLE
+        </div>
+    </div>
+
+    <div class="content">
+        <!-- Metode 1: Dana (Nomor Rekening / Akun) -->
+        <div class="payment-method">
+            <div class="method-title">
+                <i class="fab fa-dochub"></i> <!-- icon gaya Dana mirip -->
+                <span>DANA Indonesia</span>
+            </div>
+            <div class="info-rekening" id="danaInfo">
+                <div class="nomor-detail">
+                    <span class="label-small"><i class="fas fa-mobile-alt"></i> NOMOR AKUN</span>
+                    <span class="nomor-akun" id="danaNumber">082256210751</span>
+                    <span class="nama-owner"><i class="fas fa-user-circle"></i> Johnatan</span>
+                </div>
+                <button class="btn-copy" data-copy="082256210751" data-type="dana">
+                    <i class="fas fa-copy"></i> Salin No.
+                </button>
+            </div>
+            <div style="font-size: 0.75rem; color: #4c6a7c; margin-top: 8px; display: flex; gap: 12px;">
+                <span><i class="fas fa-check-circle"></i> Minimal transfer Rp10.000</span>
+                <span><i class="fas fa-clock"></i> 24 jam online</span>
+            </div>
+        </div>
+
+        <!-- Metode 2: QRIS ALL PAYMENT (dengan file gambar) -->
+        <div class="payment-method">
+            <div class="method-title">
+                <i class="fas fa-qrcode"></i>
+                <span>QRIS All Payment</span>
+            </div>
+            <div class="qris-area">
+                <div style="font-weight: 500; margin-bottom: 6px;">Scan via OVO, DANA, GoPay, LinkAja, Bank App</div>
+                <div class="qris-image-wrapper" id="qrisContainer">
+                    <!-- Menampilkan gambar QRIS dari file IMG-20260418-WA0012.jpg (asumsi path lokal) -->
+                    <img id="qrisImg" class="real-qris-img" src="IMG-20260418-WA0012.jpg" alt="QRIS All Payment" style="display: block;" onerror="handleImageError()">
+                    <!-- fallback jika gambar tidak ditemukan -->
+                </div>
+                <div class="qris-caption">
+                    <i class="fas fa-camera"></i> Buka aplikasi payment apapun & scan kode QR
+                </div>
+                <button class="btn-outline" id="saveQrisBtn" style="margin-top: 16px; width: 100%; background:#f0f4fe;">
+                    <i class="fas fa-download"></i> Simpan QRIS (unduh)
+                </button>
+            </div>
+        </div>
+
+        <!-- Tombol tindakan: pesan via WA & salin semua -->
+        <div class="action-buttons">
+            <button class="btn-primary" id="waBtn">
+                <i class="fab fa-whatsapp"></i> Konfirmasi via WA
+            </button>
+            <button class="btn-outline" id="copyAllBtn">
+                <i class="fas fa-copy"></i> Salin Semua
+            </button>
+        </div>
+
+        <hr />
+        <div style="font-size: 0.7rem; text-align: center; color: #3d5a73;">
+            <i class="fas fa-lock"></i> Data rekening terenkripsi & aman. Pastikan transfer ke nomor yang benar.
+        </div>
+    </div>
+    <footer>
+        <i class="fas fa-store"></i> Johnatan Official Payment · QRIS All Payment Support
+    </footer>
+</div>
+
+<div id="toastMsg" class="toast-msg">✨ Tersalin ke clipboard</div>
+
+<script>
+    // --- Variabel Data ---
+    const DANA_NUMBER = "082256210751";
+    const OWNER_NAME = "Johnatan";
+    const QRIS_FILENAME = "IMG-20260418-WA0012.jpg";  // sesuai dengan file yang diupload/disertakan
+    
+    // Fungsi untuk menampilkan notifikasi
+    function showToast(message, duration = 2000) {
+        const toast = document.getElementById('toastMsg');
+        toast.textContent = message || "✔️ Berhasil disalin!";
+        toast.classList.add('show');
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, duration);
+    }
+
+    // Fungsi copy teks ke clipboard
+    async function copyToClipboard(text, successMsg = "Nomor tersalin!") {
+        try {
+            await navigator.clipboard.writeText(text);
+            showToast(successMsg);
+        } catch (err) {
+            // fallback untuk browser lama
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            showToast(successMsg);
+        }
+    }
+
+    // Handle error jika gambar QRIS tidak ditemukan -> tampilkan placeholder
+    window.handleImageError = function() {
+        const imgElement = document.getElementById('qrisImg');
+        if (imgElement) {
+            // cek apakah sudah di-fallback sebelumnya
+            if (!imgElement.src.includes('data:image')) {
+                imgElement.onerror = null; // menghindari loop
+                imgElement.style.display = 'none';
+                const wrapper = document.getElementById('qrisContainer');
+                // buat placeholder cantik jika gagal load gambar
+                const placeholderDiv = document.createElement('div');
+                placeholderDiv.className = 'qris-placeholder';
+                placeholderDiv.innerHTML = `
+                    <i class="fas fa-qrcode"></i>
+                    <span style="font-weight:bold;">QRIS All Payment</span>
+                    <small style="font-size:11px;">(gambar belum tersedia)</small>
+                    <span style="font-size:10px;">⬇️ Upload file "IMG-20260418-WA0012.jpg"</span>
+                `;
+                // Hapus gambar yang gagal lalu tambahkan placeholder
+                if (imgElement.parentNode) {
+                    imgElement.remove();
+                }
+                wrapper.appendChild(placeholderDiv);
+                showToast("⚠️ File QRIS tidak ditemukan, gunakan placeholder", 2500);
+            }
+        }
+    };
+
+    // Pastikan gambar memiliki event error
+    const qrisImage = document.getElementById('qrisImg');
+    if (qrisImage) {
+        qrisImage.onerror = function() {
+            handleImageError();
+        };
+        // cek juga jika gambar 404, onerror akan triggered.
+        // tambahkan timestamp untuk memaksa reload? tidak perlu.
+    } else {
+        // Jika id qrisImg tidak ada (seharusnya ada) buat fallback manual
+        setTimeout(() => {
+            if (!document.getElementById('qrisImg')) {
+                const container = document.getElementById('qrisContainer');
+                if(container && !container.querySelector('.qris-placeholder')) {
+                    const fallbackDiv = document.createElement('div');
+                    fallbackDiv.className = 'qris-placeholder';
+                    fallbackDiv.innerHTML = `<i class="fas fa-image"></i> QRIS tidak tersedia<br><small>upload IMG-20260418-WA0012.jpg</small>`;
+                    container.appendChild(fallbackDiv);
+                }
+            }
+        }, 100);
+    }
+
+    // Tombol Salin nomor Dana (bisa via class .btn-copy)
+    const copyButtons = document.querySelectorAll('.btn-copy');
+    copyButtons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const textToCopy = btn.getAttribute('data-copy');
+            if (textToCopy) {
+                copyToClipboard(textToCopy, `✅ Nomor ${textToCopy} disalin!`);
+            } else {
+                // fallback
+                const nomorSpan = document.getElementById('danaNumber');
+                if (nomorSpan) copyToClipboard(nomorSpan.innerText, "Nomor Dana tersalin");
+            }
+        });
+    });
+
+    // Tombol "Salin Semua" (nomor rekening & info pembayaran)
+    const copyAllBtn = document.getElementById('copyAllBtn');
+    if (copyAllBtn) {
+        copyAllBtn.addEventListener('click', () => {
+            const messageAll = `*Informasi Pembayaran*\n\n💳 Metode DANA\nNomor: ${DANA_NUMBER}\nAtas Nama: ${OWNER_NAME}\n\n📱 QRIS All Payment (scan via aplikasi)\nSilakan scan kode QR yang tersedia.\n\nTerima kasih!`;
+            copyToClipboard(messageAll, "✅ Semua info pembayaran disalin");
+        });
+    }
+
+    // Tombol Konfirmasi via WhatsApp (mengirim pesan cepat)
+    const waBtn = document.getElementById('waBtn');
+    if (waBtn) {
+        waBtn.addEventListener('click', () => {
+            const phoneNumber = "6282256210751"; // format internasional tanpa '+' atau dengan '+'? (082256210751 -> 6282256210751)
+            const message = `Halo kak Johnatan, saya sudah melakukan transfer melalui DANA ke nomor ${DANA_NUMBER} (a.n. ${OWNER_NAME}). Mohon konfirmasi ya. Terima kasih.`;
+            const encodedMsg = encodeURIComponent(message);
+            // buka WhatsApp web atau app
+            window.open(`https://wa.me/${phoneNumber}?text=${encodedMsg}`, '_blank');
+        });
+    }
+
+    // Tombol Simpan QRIS (mengunduh gambar jika ada, atau memberikan notifikasi)
+    const saveQrisBtn = document.getElementById('saveQrisBtn');
+    if (saveQrisBtn) {
+        saveQrisBtn.addEventListener('click', () => {
+            const imgElement = document.getElementById('qrisImg');
+            // cek apakah img ada dan sumbernya valid serta tidak error
+            if (imgElement && imgElement.src && imgElement.complete && imgElement.naturalWidth > 0) {
+                // download gambar via fetch
+                fetch(imgElement.src)
+                    .then(response => response.blob())
+                    .then(blob => {
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = 'qris_all_payment.png';
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+                        showToast("📲 QRIS berhasil diunduh!", 2000);
+                    })
+                    .catch(() => {
+                        // fallback: coba buka link gambar
+                        const link = document.createElement('a');
+                        link.href = imgElement.src;
+                        link.download = 'qris_payment.jpg';
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                        showToast("🖼️ Mencoba unduh QRIS", 1500);
+                    });
+            } else {
+                // jika gambar placeholder atau error -> beri notifikasi cara manual
+                const placeholderDiv = document.querySelector('.
