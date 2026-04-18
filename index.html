@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Pembayaran Simpel & Kece - Johnatan</title>
+    <!-- Google Fonts untuk tampilan lebih stylish -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 (Gratis) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(145deg, #e0eafc 0%, #cfdef3 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            position: relative;
+        }
+
+        /* Efek blur background glassmorph */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            backdrop-filter: blur(3px);
+            z-index: -2;
+        }
+
+        /* Kartu utama */
+        .payment-card {
+            max-width: 500px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+            border-radius: 2.5rem;
+            box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0,0,0,0.05);
+            overflow: hidden;
+            transition: transform 0.2s ease;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+
+        .payment-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Header */
+        .card-header {
+            background: linear-gradient(135deg, #1e2b3c, #0f1a24);
+            padding: 1.8rem 1.5rem;
+            text-align: center;
+            color: white;
+        }
+
+        .card-header h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .card-header h1 i {
+            font-size: 1.9rem;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
+
+        .card-header p {
+            font-size: 0.9rem;
+            opacity: 0.85;
+            margin-top: 8px;
+            font-weight: 400;
+        }
+
+        /* Badge */
+        .badge-store {
+            background: rgba(255,255,255,0.2);
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            margin-top: 12px;
+            font-weight: 500;
+        }
+
+        /* konten utama */
+        .card-body {
+            padding: 1.8rem 1.5rem 2rem;
+        }
+
+        /* section Dana */
+        .dana-section {
+            background: #f1f5f9;
+            border-radius: 1.5rem;
+            padding: 1.2rem 1.2rem;
+            margin-bottom: 2rem;
+            transition: all 0.2s;
+            border: 1px solid #e2e8f0;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: #0f172a;
+        }
+
+        .section-title i {
+            font-size: 1.6rem;
+            color: #1e88e5;
+        }
+
+        .rekening-box {
+            background: white;
+            border-radius: 1.2rem;
+            padding: 1rem 1.2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            border: 1px solid #eef2ff;
+        }
+
+        .rek-info {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .label-nama {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            color: #5b6e8c;
+        }
+
+        .nomor-rek {
+            font-size: 1.35rem;
+            font-weight: 800;
+            font-family: monospace;
+            letter-spacing: 1px;
+            background: #f8fafc;
+            padding: 4px 8px;
+            border-radius: 12px;
+            display: inline-block;
+            color: #0b2b3b;
+        }
+
+        .nama-pemilik {
+            font-weight: 600;
+            color: #1e293b;
+            font-size: 1rem;
+        }
+
+        .btn-copy {
+            background: #0f172a;
+            border: none;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-copy i {
+            font-size: 1rem;
+        }
+
+        .btn-copy:hover {
+            background: #2d3a5e;
+            transform: scale(0.97);
+        }
+
+        /* QRIS section */
+        .qris-section {
+            background: linear-gradient(115deg, #ffffff 0%, #fef9e6 100%);
+            border-radius: 1.5rem;
+            padding: 1.2rem;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(0,0,0,0.08);
+            text-align: center;
+        }
+
+        .qris-title {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #2c3e2f;
+            margin-bottom: 1rem;
+        }
+
+        .qris-title i {
+            font-size: 1.6rem;
+            color: #2b7e3a;
+        }
+
+        .qris-placeholder {
+            background: white;
+            border-radius: 1.8rem;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+        }
+
+        .qris-img-wrapper {
+            background: #fff;
+            border-radius: 1.5rem;
+            padding: 12px;
+            display: inline-block;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .qris-img {
+            max-width: 180px;
+            width: 100%;
+            height: auto;
+            border-radius: 1rem;
+            display: block;
+            margin: 0 auto;
+            background: #faf9f2;
+        }
+
+        .btn-load-qris {
+            background: #1f5f2e;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 60px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 6px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-load-qris:hover {
+            background: #0e4620;
+            transform: scale(0.98);
+        }
+
+        .info-qris {
+            font-size: 0.7rem;
+            color: #4b5563;
+            margin-top: 8px;
+        }
+
+        /* Footer */
+        .card-footer {
+            background: #f1f5f9;
+            padding: 1rem 1.5rem;
+            text-align: center;
+            font-size: 0.7rem;
+            color: #4a5a72;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        /* toast notifikasi */
+        .toast-msg {
+            position: fixed;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%) scale(0.9);
+            background: #1e293bdd;
+            backdrop-filter: blur(8px);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 0.85rem;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.2s, transform 0.2s;
+            pointer-events: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .toast-msg.show {
+            opacity: 1;
+            transform: translateX(-50%) scale(1);
+        }
+
+        @media (max-width: 480px) {
+            .payment-card {
+                border-radius: 1.8rem;
+            }
+            .card-body {
+                padding: 1.2rem;
+            }
+            .nomor-rek {
+                font-size: 1.1rem;
+            }
+            .btn-copy {
+                padding: 8px 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="payment-card">
+    <div class="card-header">
+        <h1>
+            <i class="fas fa-wallet"></i> 
+            Bayar Mudah
+        </h1>
+        <p>Scan QRIS atau Transfer ke Dana</p>
+        <div class="badge-store">
+            <i class="fas fa-check-circle"></i> Terpercaya
+        </div>
+    </div>
+
+    <div class="card-body">
+        <!-- Bagian DANA -->
+        <div class="dana-section">
+            <div class="section-title">
+                <i class="fas fa-mobile-alt"></i>
+                <span>DANA</span>
+            </div>
+            <div class="rekening-box">
+                <div class="rek-info">
+                    <span class="label-nama"><i class="far fa-credit-card"></i> No. Rekening / ID Dana</span>
+                    <span class="nomor-rek" id="danaNumber">082256210751</span>
+                    <span class="nama-pemilik"><i class="fas fa-user"></i> a.n. Johnatan</span>
+                </div>
+                <button class="btn-copy" id="copyDanaBtn">
+                    <i class="far fa-copy"></i> Salin No
+                </button>
+            </div>
+            <div style="font-size: 0.7rem; margin-top: 10px; color:#475569; text-align: center;">
+                <i class="fas fa-info-circle"></i> Buka aplikasi DANA, masukkan nomor di atas
+            </div>
+        </div>
+
+        <!-- Bagian QRIS All Payment -->
+        <div class="qris-section">
+            <div class="qris-title">
+                <i class="fas fa-qrcode"></i> 
+                <span>QRIS All Payment</span>
+                <i class="fas fa-arrow-right"></i>
+            </div>
+            <div class="qris-placeholder" id="qrisContainer">
+                <div class="qris-img-wrapper" id="qrisImageWrapper">
+                    <!-- gambar akan dimuat via tombol atau langsung dari URL? 
+                         Tapi karena user ingin "bisa masuk ke nomor rekening saya" dan qris,
+                         kita tampilkan QR dari link MediaFire dengan fitur load -->
+                    <img id="qrisImg" class="qris-img" src="" alt="QRIS Pembayaran" style="display: none;">
+                    <div id="qrisPlaceholderText" style="padding: 20px; text-align: center; background:#f3f4f6; border-radius: 24px;">
+                        <i class="fas fa-cloud-download-alt" style="font-size: 2rem; color: #368f4b;"></i>
+                        <p style="margin-top: 8px; font-size: 0.8rem;">Klik tombol untuk muat QRIS</p>
+                    </div>
+                </div>
+                <button class="btn-load-qris" id="loadQrisBtn">
+                    <i class="fas fa-download"></i> Tampilkan QRIS
+                </button>
+                <div class="info-qris">
+                    <i class="fas fa-universal-access"></i> Scan pakai DANA, OVO, GoPay, LinkAja, ShopeePay dll.
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 10px; font-size: 0.7rem; background: #e9f0f5; padding: 6px; border-radius: 30px;">
+            ⚡ Pembayaran instan | Terima kasih
+        </div>
+    </div>
+
+    <div class="card-footer">
+        <i class="far fa-clock"></i> 24 Jam Nonstop • Aman & Nyaman
+    </div>
+</div>
+
+<div id="toastMessage" class="toast-msg">📋 Tersalin!</div>
+
+<script>
+    (function() {
+        // Data nomor Dana
+        const danaNumber = "082256210751";
+        const atasNama = "Johnatan";
+        
+        // Elemen
+        const copyBtn = document.getElementById('copyDanaBtn');
+        const danaSpan = document.getElementById('danaNumber');
+        const toast = document.getElementById('toastMessage');
+        const loadQrisBtn = document.getElementById('loadQrisBtn');
+        const qrisImg = document.getElementById('qrisImg');
+        const placeholderDiv = document.getElementById('qrisPlaceholderText');
+        
+        // URL QRIS dari MediaFire (langsung file image)
+        // Link: https://www.mediafire.com/file/5vhfn40h30mpnhu/IMG-20260418-WA0012.jpg/file
+        // Kita perlu mendapatkan direct download URL? MediaFire tidak memberikan direct image link biasa,
+        // tetapi kita bisa menggunakan link download? Untuk keperluan tampilan QRIS, biasanya kita ingin menampilkan gambar.
+        // Karena file tersebut adalah gambar JPG, kita bisa menggunakan embed dengan cara mengambil file melalui link download yang diarahkan?
+        // Namun agar user friendly, kita bisa memanfaatkan layanan "mediafire" tidak langsung bisa diimg, oleh karena itu saya akan membuat proxy sederhana? Tidak perlu,
+        // Saya akan gunakan link download yang menghasilkan gambar, karena banyak pengguna akan klik load dan kita arahkan ke URL yang benar.
+        // Solusi: Karena mediafire memberikan halaman download, tidak bisa langsung di-tampilkan sebagai img. Maka solusi profesional:
+        // Sediakan tombol "Buka QRIS" atau gunakan link alternatif. Tapi permintaan user "Qris all payment : https://www.mediafire.com/.../IMG-xxx.jpg/file"
+        // Supaya sesuai harapan: kita tampilkan QR dengan cara navigasi atau menampilkan preview menggunakan iframe? Kurang elegan.
+        // Lebih baik kita beri opsi: Menampilkan gambar QR dengan cara mengunduh lalu ditampilkan? tidak bisa cross-origin.
+        // Alternatif paling elegan: Beri link langsung ke file gambar dengan embed menggunakan generator? tidak bisa.
+        // Karena user ingin web payment yang kece dan bisa masuk ke nomor rekening + qris, kita bisa menggunakan placeholder dan link download.
+        // Agar benar-benar menampilkan QRIS, saya akan menggunakan placeholder dengan instruksi buka gambar QR via link, namun saya akan menambahkan fitur "Lihat QRIS" yang membuka tab baru ke file tersebut.
+        // Tapi agar lebih baik, kita bisa menyematkan gambar jika kita punya URL publik. MediaFire tidak memberikan direct hotlink.
+        // Untuk memberikan solusi terbaik & sederhana: Saya akan membuat tombol yang membuka gambar QRIS di tab baru, sehingga pengguna bisa melihat dan scan.
+        // Saya juga menampilkan instruksi yang jelas. Namun karena permintaan "bisa masuk ke nomor rekening saya" dan QRIS all payment, tujuan selesai.
+        
+        // Saya akan membuat fungsionalitas yang seamless: ketika klik Tampilkan QRIS, kita buka modal / frame? Paling mudah: buka gambar di tab baru.
+        // Namun saya bisa membuat div yang menampilkan gambar dengan menggunakan link dari MediaFire yang mungkin butuh cookie? tidak efektif.
+        // Solusi terbaik: Saya akan menyediakan tombol "Buka QRIS Gambar" yang langsung menampilkan gambar dari MediaFire melalui fitur new window, sekaligus memberikan pesan bahwa QR dapat discan.
+        // Karena banyak payment gateway pakai cara seperti ini.
+        
+        // Tapi agar user tetap bisa scan tanpa ribet, saya tambahkan opsi download dan preview teks.
+        // Saya modifikasi: ketika klik load qris, kita buka tab baru ke URL MediaFire (file gambar) + kita beri notifikasi.
+        // Namun agar pengguna bisa scan dengan mudah, di halaman akan ada peringatan untuk membuka gambar.
+        // Karena bagaimanapun juga gambar QRIS dari MediaFire tidak bisa langsung diembed karena kebijakan hotlink.
+        // Saya akan membuat "Lihat QRIS" membuka file gambar tersebut langsung (MediaFire biasanya akan menampilkan halaman dengan gambar, bukan file mentah).
+        // Untuk pengalaman terbaik, saya akan gunakan layanan? tidak perlu. 
+        // Alternatif: Saya akan meminta user untuk mengunduh gambar QRIS lalu scan. Tapi itu merepotkan.
+        // Lebih baik saya sediakan link yang langsung mengarah ke file gambar dengan embed menggunakan parameter ?dl=1? MediaFire tidak support langsung.
+        // Namun saya bisa menawarkan cara: "Klik tombol untuk melihat QRIS, lalu screenshot/scan dari layar".
+        // Saya rasa itu cukup baik.
+        
+        const qrisFileUrl = "https://www.mediafire.com/file/5vhfn40h30mpnhu/IMG-20260418-WA0012.jpg/file";  // halaman mediafire yg menampilkan gambar
+        
+        // Fungsi copy
+        function showToast(message) {
+            toast.textContent = message || "📋 Nomor tersalin!";
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2000);
+        }
+        
+        copyBtn.addEventListener('click', async () => {
+            try {
+                await navigator.clipboard.writeText(danaNumber);
+                showToast(`✅ ${danaNumber} berhasil disalin`);
+            } catch (err) {
+                // fallback
+                const textarea = document.createElement('textarea');
+                textarea.value = danaNumber;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                showToast(`📋 Nomor disalin (manual)`);
+            }
+        });
+        
+        // Event QRIS: karena kita ingin menampilkan QR dengan mudah, saya buat dua opsi: tombol utama akan membuka tab dengan gambar QRIS (halaman MediaFire yang menampilkan gambar)
+        // agar user bisa scan langsung dari layar (buka gambar full di tab). lalu saya juga bisa menambahkan fitur "Buka Gambar".
+        // Tetapi di dalam web payment saya ingin seamless, jadi saya juga menambahkan teks panduan dan tombol buka.
+        loadQrisBtn.addEventListener('click', (e) => {
+            // Buka tab baru dengan link file mediafire (gambar QR)
+            window.open(qrisFileUrl, '_blank');
+            showToast("🔳 Membuka halaman QRIS, silakan scan dari layar");
+            // Juga kita ubah sedikit tampilan placeholder agar memberi feedback bahwa QR sudah dibuka
+            if (placeholderDiv) {
+                placeholderDiv.innerHTML = `<i class="fas fa-external-link-alt" style="font-size: 1.8rem; color:#2b6e3b;"></i>
+                                            <p style="font-size:0.75rem; margin-top:5px;">Tab QRIS terbuka! Scan dari layar</p>`;
+                setTimeout(() => {
+                    if(placeholderDiv && !qrisImg.style.display === 'block') {
+                        // Kembalikan setelah 3 detik? tidak perlu, biarkan informatif
+                    }
+                }, 3000);
+            }
+            // Tampilkan juga gambar placeholder opsional (tapi tidak bisa embed)
+        });
+        
+        // Alternative: kita juga bisa menyediakan tombol untuk menyalin pesan terima kasih.
+        // Untuk keperluan kece, tampilkan juga nomor rekening dengan efek.
+        
+        // Efek tambahan: Memastikan bahwa jika user menginginkan tampilan QR langsung, tidak memungkinkan karena mediafire.
+        // Tapi solusi saya profesional: Saya akan menambahkan fitur "Salin Semua Info Rekening"
+        const extraCopy = document.createElement('div');
+        // Tidak perlu berlebihan.
+        
+        // Tampilkan default bahwa qris image tidak bisa langsung load, tapi kita berikan solusi praktis.
+        // Set agar placeholder teks awal memberi informasi bahwa QR dapat diakses via tombol.
+        if(placeholderDiv) {
+            placeholderDiv.innerHTML = `<i class="fas fa-qr
